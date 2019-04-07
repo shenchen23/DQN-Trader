@@ -20,6 +20,7 @@ class Agent:
 		self.inventory = []
 		self.model_name = model_name
 		self.is_eval = is_eval
+		self.commission = 0.97 # commission cost
 
 		self.gamma = 0.95
 		self.epsilon = 1.0 
@@ -61,7 +62,7 @@ class Agent:
 		for state, action, reward, next_state, done in mini_batch:
 			target = reward
 			if not done:
-				target = reward + self.gamma * np.amax(self.model.predict(next_state)[0])
+				target = reward + self.commission * self.gamma * np.amax(self.model.predict(next_state)[0])
 
 			target_f = self.model.predict(state)
 			target_f[0][action] = target
