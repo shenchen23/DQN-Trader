@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import math
 
 # prints formatted price
@@ -14,6 +15,12 @@ def getStockDataVec(key):
 		vec.append(float(line.split(",")[4]))
 
 	return vec
+
+def getOtherDataVec():
+	df = pd.read_csv("data/fulldata.csv")
+	Vol = df.Vol.values
+	Volume_ratio = df.Volume_ratio.values
+	return Vol, Volume_ratio
 
 # returns the sigmoid
 def sigmoid(x):
@@ -31,10 +38,18 @@ def sigmoid(x):
 
 # returns an an n-day state representation ending at time t
 def getState(data, t, n):
+	Vol, Volume_ratio =  getOtherDataVec()
+
 	d = t - n + 1
 	block = data[d:t + 1] if d >= 0 else -d * [data[0]] + data[0:t + 1] # pad with t0
+
+	otherdata = np.array([Volume_ratio,Vol])
+
+	new_block = otherdata[:,d:t] if d >= 0 else np.concatenate((np.repeat(np.array([otherdata[:,0]]),-d-1, axis=0).T, otherdata[:,0:t + 1]), 1)
+
 	res = []
 	for i in range(n - 1):
 		res.append(sigmoid(block[i + 1] - block[i]))
 
-	return np.array([res])
+	return np.concatenate([np.array([res]),new_block])
+

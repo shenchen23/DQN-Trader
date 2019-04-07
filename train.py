@@ -14,6 +14,8 @@ try:
 
 	agent = Agent(window_size)
 	data = getStockDataVec(stock_name)
+	
+
 	l = len(data) - 1
 	batch_size = 32
 
