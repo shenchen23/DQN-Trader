@@ -111,7 +111,7 @@ def sigmoid(x):
 
 # returns an an n-day state representation ending at time t
 def getState(data, t, n):
-	Vol, Volume_ratio =  getOtherDataVec()
+	Vol, Volume_ratio =  getOtherDataVec() # add sp500 return
 
 	d = t - n + 1
 	block = data[d:t + 1] if d >= 0 else -d * [data[0]] + data[0:t + 1] # pad with t0
