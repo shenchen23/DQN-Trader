@@ -23,5 +23,6 @@ Add trading cost inside the reward updating function.
 6. Sharpe ratios.
 7. Record how many times it traded.
 8. Run facebook, google, amazon, netflix, aaple. (faang).
+9. Add PNL.
 
 

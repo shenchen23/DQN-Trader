@@ -1,6 +1,9 @@
 from agent.agent import Agent
 from functions import *
 import sys
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 
 from keras.callbacks import TensorBoard, EarlyStopping
@@ -25,6 +28,8 @@ try:
 
 		total_profit = 0
 		agent.inventory = []
+		hold_try_profit = []
+		
 
 		for t in range(l):
 			action = agent.act(state)
@@ -35,12 +40,27 @@ try:
 
 			if action == 1: # buy
 				agent.inventory.append(data[t])
+
 				print ("Buy: " + formatPrice(data[t]))
 
 			elif action == 2 and len(agent.inventory) > 0: # sell
+				
 				bought_price = agent.inventory.pop(0)
 				reward = max(data[t] - bought_price, 0)
+
+				agent.rewardmemory.append(reward) #
+
+
 				total_profit += data[t] - bought_price
+				agent.total_profit.append(total_profit)
+
+				if e == episode_count:
+					agent.final_try_profit.append(total_profit)
+
+				if e == 0:
+					agent.first_try_profit.append(total_profit)
+					
+
 				print ("Sell: " + formatPrice(data[t]) + " | Profit: " + formatPrice(data[t] - bought_price))
 
 			done = True if t == l - 1 else False
@@ -55,8 +75,49 @@ try:
 			if len(agent.memory) > batch_size:
 				agent.expReplay(batch_size)
 
+		agent.episode_memory.append(total_profit)
+
 		if e % 10 == 0:
 			agent.model.save("models/model_ep" + str(e))
+
+	
+	t0 = np.arange(1, len(hold_try_profit)+1, 1)
+	t1 = np.arange(1, len(agent.rewardmemory)+1, 1)
+	t2 = np.arange(1, len(agent.total_profit)+1, 1)
+	t3 = np.arange(1, len(agent.first_try_profit)+1, 1)
+	t4 = np.arange(1, len(agent.final_try_profit)+1, 1)
+	t5 = np.arange(1, len(agent.episode_memory)+1, 1)
+
+	plt.figure(figsize=(20,20))
+	plt.subplot(611)
+	plt.plot(t1, agent.rewardmemory, '-')
+	plt.title('Agent reward')
+
+	plt.subplot(612)
+	plt.plot(t2, agent.total_profit, '-')
+	plt.title('Agent total_profit')
+
+	plt.subplot(614)
+	plt.plot(t0,hold_try_profit, '-')
+	plt.title('Agent First episode profit')
+
+	plt.subplot(614)
+	plt.plot(t3,agent.first_try_profit, '-')
+	plt.title('Agent First episode profit')
+
+	plt.subplot(615)
+	plt.plot(t4,agent.final_try_profit, '-')
+	plt.title('Agent Last episode profit')
+
+	plt.subplot(616)
+	plt.plot(t5,agent.episode_memory, '-')
+	plt.title('Agent profit for each episodes')
+
+
+
+	plt.savefig('performance.png')
+
+	
 except Exception as e:
 	print("Error occured: {0}".format(e))
 finally:

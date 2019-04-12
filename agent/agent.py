@@ -28,6 +28,14 @@ class Agent:
 		self.epsilon_decay = 0.995
 		self.firstIter = True
 
+		self.rewardmemory = []
+		self.total_profit = []
+		self.final_try_profit = []
+		self.first_try_profit = []
+		self.episode_memory = []
+
+
+
 		self.model = load_model("models/" + model_name) if is_eval else self._model()
 
 	def _model(self):
