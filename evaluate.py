@@ -48,8 +48,8 @@ try:
 
 		elif action == 2 and len(agent.inventory) > 0: # sell
 			bought_price = agent.inventory.pop(0)
-			reward = max(data[t] - bought_price, 0)
-			total_profit += data[t] - bought_price
+			reward = data[t] - bought_price  # consider negative values.
+			total_profit += data[t] - bought_price 
 			#plt_data.append((timeseries_iter, data[t], 'Sell'))
 			
 			print ("Sell: " + formatPrice(data[t]) + " | Profit: " + formatPrice(data[t] - bought_price))

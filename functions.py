@@ -20,6 +20,9 @@ def getOtherDataVec():
 	df = pd.read_csv("data/fulldata.csv")
 	Vol = df.Vol.values
 	Volume_ratio = df.Volume_ratio.values
+
+	## sp500 returns
+	
 	return Vol, Volume_ratio
 
 # returns the sigmoid

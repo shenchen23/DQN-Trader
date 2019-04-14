@@ -24,5 +24,8 @@ Add trading cost inside the reward updating function.
 7. Record how many times it traded.
 8. Run facebook, google, amazon, netflix, aaple. (faang).
 9. Add PNL.
+10. Plot every state variables and things to learn(returns).
+11. Change reward functions.
+12. How to setup validation? Is continuous learning possible? 
 
 
