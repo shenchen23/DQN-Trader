@@ -135,7 +135,7 @@ try:
 
 	plt.savefig('performance.png')
 
-	
+
 except Exception as e:
 	print("Error occured: {0}".format(e))
 finally:

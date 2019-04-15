@@ -27,7 +27,8 @@ Add trading cost inside the reward updating function.
 10. Plot every state variables and things to learn(returns).
 11. Change reward functions. (X)
 12. How to setup validation? Is continuous learning possible? 
-
+13. add state for *time left*, *last time loss/profit*.
+14. sell out in a week.
 
 ## log
 After considering negative values, our model only buy stocks and never sell. 
