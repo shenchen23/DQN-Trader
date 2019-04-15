@@ -37,6 +37,21 @@ try:
 			# sit
 			next_state = getState(data, t + 1, window_size + 1)
 			reward = 0
+			if t == l-1:
+				clear_position = len(agent.inventory)
+				reward = clear_position*data[t] - sum(agent.inventory)
+				agent.rewardmemory.append(reward) #
+
+				total_profit += reward
+				agent.total_profit.append(total_profit)
+				if e == episode_count:
+					agent.final_try_profit.append(total_profit)
+
+				if e == 0:
+					agent.first_try_profit.append(total_profit)
+				
+				print ("Clear position. Sell: " +str(clear_position)+" stocks at "+formatPrice(data[t]) + " | Profit: " + formatPrice(reward))
+				continue
 
 			if action == 1: # buy
 				agent.inventory.append(data[t])
@@ -46,7 +61,7 @@ try:
 			elif action == 2 and len(agent.inventory) > 0: # sell
 				
 				bought_price = agent.inventory.pop(0)
-				reward = max(data[t] - bought_price, 0)
+				reward = data[t] - bought_price# consider negative values
 
 				agent.rewardmemory.append(reward) #
 
@@ -59,6 +74,8 @@ try:
 
 				if e == 0:
 					agent.first_try_profit.append(total_profit)
+
+
 					
 
 				print ("Sell: " + formatPrice(data[t]) + " | Profit: " + formatPrice(data[t] - bought_price))
@@ -77,6 +94,8 @@ try:
 
 		agent.episode_memory.append(total_profit)
 
+
+
 		if e % 10 == 0:
 			agent.model.save("models/model_ep" + str(e))
 
@@ -89,30 +108,29 @@ try:
 	t5 = np.arange(1, len(agent.episode_memory)+1, 1)
 
 	plt.figure(figsize=(20,20))
-	plt.subplot(611)
+	plt.subplot(511)
 	plt.plot(t1, agent.rewardmemory, '-')
 	plt.title('Agent reward')
 
-	plt.subplot(612)
+	plt.subplot(512)
 	plt.plot(t2, agent.total_profit, '-')
 	plt.title('Agent total_profit')
 
-	plt.subplot(614)
-	plt.plot(t0,hold_try_profit, '-')
-	plt.title('Agent First episode profit')
+	#plt.subplot(614)
+	#plt.plot(t0,hold_try_profit, '-')
+	#plt.title('Agent First episode profit')
 
-	plt.subplot(614)
+	plt.subplot(513)
 	plt.plot(t3,agent.first_try_profit, '-')
 	plt.title('Agent First episode profit')
 
-	plt.subplot(615)
+	plt.subplot(514)
 	plt.plot(t4,agent.final_try_profit, '-')
 	plt.title('Agent Last episode profit')
 
-	plt.subplot(616)
+	plt.subplot(515)
 	plt.plot(t5,agent.episode_memory, '-')
 	plt.title('Agent profit for each episodes')
-
 
 
 	plt.savefig('performance.png')

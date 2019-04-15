@@ -16,7 +16,7 @@ Add trading cost inside the reward updating function.
 ## Things to work on
 
 1. Add SP500 returns, inventory(Cash)(total money left) as state variables.
-2. Add some visualization.
+2. Add some visualization. 
 3. Fix the bug that inventory is not empty in the end.
 4. Change the constraints from inventory lengths to money.
 5. Add some benchmarks, like buy and hold entil the end.
@@ -25,7 +25,10 @@ Add trading cost inside the reward updating function.
 8. Run facebook, google, amazon, netflix, aaple. (faang).
 9. Add PNL.
 10. Plot every state variables and things to learn(returns).
-11. Change reward functions.
+11. Change reward functions. (X)
 12. How to setup validation? Is continuous learning possible? 
 
 
+## log
+After considering negative values, our model only buy stocks and never sell. 
+Now add constraint to forcely clear positions. Problem is fixed.
